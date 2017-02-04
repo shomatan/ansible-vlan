@@ -37,7 +37,12 @@ object Account {
 }
 
 trait AccountService {
-  def transfer(from: Account, to: Account, amount: Amount): Option[Amount]
+  def debit(a: Account, amount: Amount): Try[Account] = ???
+  def credit(a: Account, amount: Amount): Try[Account] = ???
+  def transfer(from: Account, to: Account, amount: Amount) = for {
+    d <- debit(from, amount)
+    c <- credit(to, amount)
+  } yield (d, c)
 }
 
 trait AccountRepository {
